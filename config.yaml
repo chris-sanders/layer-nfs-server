@@ -1,0 +1,14 @@
+options:
+  nfs-shares:
+    type: string
+    default: ""
+    description: "Comma seperated list of folders to share"
+  nfs-options:
+    type: string
+    default: "rw,sync,no_subtree_check"
+    description: "Comma seperated list of folders to share"
+  nfs-custom:
+    type: string
+    default: ""
+    description: "Raw configuration to append to exports, seperate lines with \n"
+
