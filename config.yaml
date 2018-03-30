@@ -3,6 +3,17 @@ options:
     type: string
     default: ""
     description: "Comma seperated list of folders to share"
+  nfs-clients:
+    type: string
+    default: "*"
+    description: |
+      "Comma seperated list of clients to allow.
+       This can include:
+        - single host
+        - netgroups
+        - wildcards
+        - IP networks
+       see exports(5) for details on available name formats"
   nfs-options:
     type: string
     default: "rw,sync,no_subtree_check"

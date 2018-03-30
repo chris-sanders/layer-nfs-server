@@ -1,4 +1,9 @@
-from charmhelpers.core import hookenv
+import subprocess
+
+from charmhelpers.core import (
+    hookenv,
+    templating,
+)
 
 
 class NfsHelper():
@@ -6,4 +11,9 @@ class NfsHelper():
         self.charm_config = hookenv.config()
         self.exports_file = "/etc/exports"
 
-
+    def write_exports(self):
+        context = {}
+        for entry in self.charm_config.keys():
+            context[entry.replace('-', '_')] = str(self.charm_config[entry])
+        templating.render('exports', self.exports_file, context)
+        subprocess.check_call('exportfs -ra')

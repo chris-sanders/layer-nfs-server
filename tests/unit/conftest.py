@@ -30,9 +30,16 @@ import sys
 
 
 @pytest.fixture
-def mock_layers(monkeypatch):
+def mock_layers():
     sys.modules["charms.layer"] = mock.Mock()
     sys.modules["reactive"] = mock.Mock()
+
+
+@pytest.fixture
+def mock_check_call(monkeypatch):
+    mock_call = mock.Mock()
+    monkeypatch.setattr('libnfs.subprocess.check_call', mock_call)
+    return mock_call
 
 
 @pytest.fixture
@@ -52,19 +59,17 @@ def mock_hookenv_config(monkeypatch):
     monkeypatch.setattr('libnfs.hookenv.config', mock_config)
 
 
-# @pytest.fixture
-# def mock_charm_dir(monkeypatch):
-#     monkeypatch.setattr('libhaproxy.hookenv.charm_dir', lambda: '/mock/charm/dir')
-
-
 @pytest.fixture
 def nh(tmpdir, mock_layers, mock_hookenv_config, monkeypatch):
     from libnfs import NfsHelper
     nh = NfsHelper()
 
+    # Set correct charm_dir
+    monkeypatch.setattr('libnfs.hookenv.charm_dir', lambda: '.')
+
     # Patch the combined exports file to a tmpfile
     export_file = tmpdir.join("exports")
-    nh.export_file = export_file.strpath
+    nh.exports_file = export_file.strpath
 
     # Any other functions that load PH will get this version
     monkeypatch.setattr('libnfs.NfsHelper', lambda: nh)
