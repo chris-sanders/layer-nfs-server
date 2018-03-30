@@ -3,6 +3,8 @@ summary: NFS file server
 maintainer: Chris Sanders <sanders.chris@gmail.com>
 description: |
   Installs NFS file server and makes local folders avaialble.
+series:
+  - xenial
 tags:
   # Replace "misc" with one or more whitelisted tags from this list:
   # https://jujucharms.com/docs/stable/authors-charm-metadata
