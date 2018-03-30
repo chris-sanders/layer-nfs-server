@@ -16,4 +16,4 @@ class NfsHelper():
         for entry in self.charm_config.keys():
             context[entry.replace('-', '_')] = str(self.charm_config[entry])
         templating.render('exports', self.exports_file, context)
-        subprocess.check_call('exportfs -ra')
+        subprocess.check_call(['exportfs', '-ra'])

@@ -16,12 +16,14 @@ nh = NfsHelper()
 @when_not('nfs-server.installed')
 def install_nfs_server():
     hookenv.status_set('maintenance', 'installing nfs server')
-    fetch.auto_update()
+    fetch.apt_update()
     fetch.apt_install(['nfs-kernel-server'])
-    hookenv.status_set('active', 'nfs server is ready')
+    nh.write_exports()
+    hookenv.status_set('active', 'Nfs server is ready')
     set_state('nfs-server.installed')
 
 
-@when('config-change')
+@when('config.changed', 'nfs-server.installed')
 def update_exports():
     nh.write_exports()
+    hookenv.log("Exports file written", hookenv.INFO)
